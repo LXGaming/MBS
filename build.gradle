@@ -1,0 +1,39 @@
+apply from: "../.gradle/sign.gradle"
+apply plugin: "java"
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+version = "0.1.0"
+group = "io.github.lxgaming.mbs"
+archivesBaseName = "MBS"
+
+configurations {
+  provided {
+    compile.extendsFrom(provided)
+  }
+  build {
+    finalizedBy(signJar)
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+}
+
+jar {
+  manifest {
+    attributes "Main-Class": "io.github.lxgaming.mbs.MBS"
+  }
+  from {
+    (configurations.compile - configurations.provided).collect {
+	  it.isDirectory() ? it : zipTree(it)
+	}
+  }
+  from {
+    ["LICENSE"]
+  }
+}
