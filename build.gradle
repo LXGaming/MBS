@@ -1,39 +1,61 @@
-apply from: "../.gradle/sign.gradle"
 apply plugin: "java"
+
+def signFile = "../.gradle/sign.gradle"
+if (file(signFile).exists()) {
+    apply from: signFile
+}
 
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
 
-version = "0.1.0"
 group = "io.github.lxgaming.mbs"
 archivesBaseName = "MBS"
+version = "0.1.0"
 
 configurations {
-  provided {
-    compile.extendsFrom(provided)
-  }
-  build {
-    finalizedBy(signJar)
-  }
+    provided {
+        compile.extendsFrom(provided)
+    }
+
+    build {
+        if (project.tasks.findByName("signJar")) {
+            return finalizedBy(signJar)
+        }
+
+        return doLast {
+            println("========== [WARNING] ==========")
+            println()
+            println("   This build is not signed!   ")
+            println()
+            println("========== [WARNING] ==========")
+        }
+    }
 }
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
+
 }
 
 jar {
-  manifest {
-    attributes "Main-Class": "io.github.lxgaming.mbs.MBS"
-  }
-  from {
-    (configurations.compile - configurations.provided).collect {
-	  it.isDirectory() ? it : zipTree(it)
-	}
-  }
-  from {
-    ["LICENSE"]
-  }
+    manifest {
+        attributes("Main-Class": "io.github.lxgaming.mbs.MBS")
+    }
+
+    from {
+        (configurations.compile - configurations.provided).collect {
+            if (it.isDirectory()) {
+                return it
+            }
+            return zipTree(it)
+        }
+    }
+}
+
+processResources {
+    from("LICENSE")
+    rename("LICENSE", "LICENSE-" + archivesBaseName)
 }
