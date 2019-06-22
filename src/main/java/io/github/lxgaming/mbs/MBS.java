@@ -33,7 +33,7 @@ public class MBS {
 	public static void main(String[] args) {
 		ConsoleOutput.info("Mojang Blocked Servers v" + VERSION);
 		ConsoleOutput.info("Author: LX_Gaming");
-		ConsoleOutput.info("Website: http://lxgaming.github.io/");
+		ConsoleOutput.info("Website: https://lxgaming.github.io/");
 		ConsoleOutput.info(Environment.getJavaVendor() + " - " + Environment.getJavaVersion());
 		ConsoleOutput.info(Environment.getOSName() + " - " + Environment.getOSVersion() + " - " + Environment.getOSArch());
 		setup();
@@ -57,7 +57,7 @@ public class MBS {
 		ConsoleOutput.info("Thank you for using");
 		ConsoleOutput.info("Mojang Blocked Servers v" + VERSION);
 		ConsoleOutput.info("Author: LX_Gaming");
-		ConsoleOutput.info("Website: http://lxgaming.github.io/");
+		ConsoleOutput.info("Website: https://lxgaming.github.io/");
 		ConsoleOutput.warn("Exiting...");
 		System.exit(0);
 	}
